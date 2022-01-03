@@ -44,7 +44,8 @@ RegisterCommand("autopilot", function(source, args)
 					else
 						pilot = true
 						minimap("Auto-Pilot aktiviert.")
-						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 100.0, 1.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 1074528293, 1.0, 1)
+						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 100.0, 1.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
+						SetDriveTaskDrivingStyle(GetPlayerPed(-1), 786603)
 						Citizen.CreateThread(function()
 							while pilot do
 								Wait(100)
