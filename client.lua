@@ -106,7 +106,7 @@ RegisterCommand("autopilot", function(source, args)
 					tesla_pilot = false
 					tesla_pilot_ped = nil
 					SetVehicleEngineOn(tesla, false, false, false)
-					minimap("Auto-Pilot activated.")
+					minimap("Auto-Pilot deactivated.")
 				else
 					RequestModel(225514697)
 					while not HasModelLoaded(225514697) do
