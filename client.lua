@@ -11,6 +11,29 @@ local pilot = false
 TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot funktionen', {{name="on|mark", help="Aktiviere Autopilot oder makiere dein Fahrzeug."}})
 RegisterCommand("autopilot", function(source, args)
 	if(args[1] == "mark") then
+		if IsPedInAnyVehicle(PlayerPedId(), false) then
+			--Is in a vehicle
+		else
+			minimap("Set as nearest vehicle")
+		local pos = GetEntityCoords(GetPlayerPed(-1),true)
+		local veh = GetClosestVehicle(pos.x,pos.y,pos.z,100.00,0)
+		if IsEntityAVehicle(veh) then
+			tesla = veh
+			
+				SetEntityAsMissionEntity(veh, true, true)
+				tesla_blip = AddBlipForEntity(veh)
+				if(DoesBlipExist(tesla_blip)) then
+					RemoveBlip(tesla_blip)
+				end
+			SetBlipSprite(tesla_blip, 79)
+			SetBlipColour(tesla_blip, 25)
+			BeginTextCommandSetBlipName("STRING")
+      		AddTextComponentString("Car")
+			EndTextCommandSetBlipName(tesla_blip)
+			return
+		end
+	end
+
 		if(IsPedInAnyVehicle(GetPlayerPed(-1)) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) and (vehicles:find(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(GetPlayerPed(-1), false)))) or vehicles == "")) then
 			tesla = GetVehiclePedIsIn(GetPlayerPed(-1), false)
 			SetEntityAsMissionEntity(tesla, true, true)
@@ -95,7 +118,7 @@ RegisterCommand("autopilot", function(source, args)
 					SetEntityInvincible(tesla_pilot_ped, true)
 					SetEntityVisible(tesla_pilot_ped, false, 0)
 					player_coords = GetEntityCoords(GetPlayerPed(-1))
-					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, 100.0, 1.0, GetHashKey(tesla), 1074528293, 1.0, 1)
+					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, 100.0, 1.0, GetHashKey(tesla), 786603, 1.0, 1)
 					Citizen.CreateThread(function()
 						while tesla_pilot do
 							Wait(100)
