@@ -8,7 +8,7 @@ local tesla_pilot = false
 local tesla_pilot_ped = nil
 local pilot = false
 
-TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot funktionen', {{name="on|mark", help="Aktiviere Autopilot oder makiere dein Fahrzeug."}})
+TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot features', {{name="on|mark", help="Activate Autopilot and mark your vehicle."}})
 RegisterCommand("autopilot", function(source, args)
 	if(args[1] == "mark") then
 		if IsPedInAnyVehicle(PlayerPedId(), false) then
@@ -39,7 +39,7 @@ RegisterCommand("autopilot", function(source, args)
 		if(IsPedInAnyVehicle(GetPlayerPed(-1)) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) and (vehicles:find(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(GetPlayerPed(-1), false)))) or vehicles == "")) then
 			tesla = GetVehiclePedIsIn(GetPlayerPed(-1), false)
 			SetEntityAsMissionEntity(tesla, true, true)
-			minimap("Dein Fahrzeug wurde makiert.")
+			minimap("Your vehicle was marked.")
 			if(DoesBlipExist(tesla_blip)) then
 				RemoveBlip(tesla_blip)
 			end
@@ -51,7 +51,7 @@ RegisterCommand("autopilot", function(source, args)
 			EndTextCommandSetBlipName(tesla_blip)
 		else
 			tesla = nil
-			minimap("Das Fahrzeug wurde entfernt.")
+			minimap("Your vehicle was removed from your map.")
 			if(DoesBlipExist(tesla_blip)) then
 				RemoveBlip(tesla_blip)
 			end
@@ -64,11 +64,11 @@ RegisterCommand("autopilot", function(source, args)
 				if(IsWaypointActive()) then
 					if(pilot) then
 						pilot = false
-						minimap("Auto-Pilot abgebrochen.")
+						minimap("Auto-Pilot disabled.")
 						ClearPedTasks(GetPlayerPed(-1))
 					else
 						pilot = true
-						minimap("Auto-Pilot aktiviert.")
+						minimap("Auto-Pilot activated.")
 						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 100.0, 1.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
 						SetDriveTaskDrivingStyle(GetPlayerPed(-1), 786603)
 						Citizen.CreateThread(function()
@@ -81,18 +81,18 @@ RegisterCommand("autopilot", function(source, args)
 									end
 									pilot = false
 									ClearPedTasks(GetPlayerPed(-1))
-									minimap("Auto-Pilot deaktiviert.")
+									minimap("Auto-Pilot disabled.")
 								end
 								if(IsControlPressed(27, 63) or IsControlPressed(27, 64) or IsControlPressed(27, 71) or IsControlPressed(27, 72) or IsControlPressed(27, 76)or IsControlPressed(27, 131)) then
 									pilot = false
 									ClearPedTasks(GetPlayerPed(-1))
-									minimap("Auto-Pilot deaktiviert.")
+									minimap("Auto-Pilot disabled.")
 								end
 							end
 						end)
 					end
 				else
-					minimap("Kein Ziel gesetzt.")
+					minimap("No Waypoint was set.")
 				end
 			else
 				minimap("Unknown action.")
@@ -106,13 +106,13 @@ RegisterCommand("autopilot", function(source, args)
 					tesla_pilot = false
 					tesla_pilot_ped = nil
 					SetVehicleEngineOn(tesla, false, false, false)
-					minimap("Auto-Pilot abgebrochen.")
+					minimap("Auto-Pilot activated.")
 				else
 					RequestModel(225514697)
 					while not HasModelLoaded(225514697) do
 						Wait(5)
 					end
-					minimap("Auto-Pilot aktiviert.")
+					minimap("Auto-Pilot activated.")
 					tesla_pilot = true
 					tesla_pilot_ped = CreatePed(0, 225514697, GetEntityCoords(tesla)["x"], GetEntityCoords(tesla)["y"], GetEntityCoords(tesla)["z"], 0.0, false, true)
 					SetEntityAsMissionEntity(tesla_pilot_ped, true, true)
@@ -133,7 +133,7 @@ RegisterCommand("autopilot", function(source, args)
 								RemovePedElegantly(tesla_pilot_ped)
 								tesla_pilot_ped = nil
 								SetVehicleEngineOn(tesla, false, false, false)
-								minimap("Auto-Pilot angekommen.")
+								minimap("Auto-Pilot arrived.")
 							end
 						end
 					end)
