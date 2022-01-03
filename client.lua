@@ -14,22 +14,24 @@ RegisterCommand("autopilot", function(source, args)
 		if IsPedInAnyVehicle(PlayerPedId(), false) then
 			--Is in a vehicle
 		else
-			minimap("Set as nearest vehicle")
+		minimap("Set as nearest vehicle")
 		local pos = GetEntityCoords(GetPlayerPed(-1),true)
-		local veh = GetClosestVehicle(pos.x,pos.y,pos.z,100.00,0)
+		local veh = GetClosestVehicle(pos.x,pos.y,pos.z,100000.00,0)
 		if IsEntityAVehicle(veh) then
 			tesla = veh
-			
-				SetEntityAsMissionEntity(veh, true, true)
-				tesla_blip = AddBlipForEntity(veh)
-				if(DoesBlipExist(tesla_blip)) then
-					RemoveBlip(tesla_blip)
-				end
+			SetEntityAsMissionEntity(veh, true, true)
+			if(DoesBlipExist(tesla_blip)) then
+				RemoveBlip(tesla_blip)
+			end
+			tesla_blip = AddBlipForEntity(veh)
 			SetBlipSprite(tesla_blip, 79)
 			SetBlipColour(tesla_blip, 25)
 			BeginTextCommandSetBlipName("STRING")
       		AddTextComponentString("Car")
 			EndTextCommandSetBlipName(tesla_blip)
+			return
+		else
+			minimap("No vehicles in distance.")
 			return
 		end
 	end
