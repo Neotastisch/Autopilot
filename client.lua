@@ -8,7 +8,7 @@ local tesla_pilot = false
 local tesla_pilot_ped = nil
 local pilot = false
 
-TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot features', {{name="on|mark", help="Activate Autopilot and mark your vehicle."}})
+TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot features', {{name="toggle|mark", help="Activate Autopilot and mark your vehicle."}})
 RegisterCommand("autopilot", function(source, args)
 	if(args[1] == "mark") then
 		if IsPedInAnyVehicle(PlayerPedId(), false) then
@@ -59,7 +59,7 @@ RegisterCommand("autopilot", function(source, args)
 		end
 	else
 		if(IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) and (vehicles:find(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(GetPlayerPed(-1), false)))) or vehicles == "")) then
-			if(args[1] == "on") then
+			if(args[1] == "toggle") then
 				waypoint = Citizen.InvokeNative(0xFA7C7F0AADF25D09, GetFirstBlipInfoId(8), Citizen.ResultAsVector())
 				if(IsWaypointActive()) then
 					if(pilot) then
@@ -98,7 +98,7 @@ RegisterCommand("autopilot", function(source, args)
 				minimap("Unknown action.")
 			end
 		elseif(tesla) then
-			if(args[1] == "on") then
+			if(args[1] == "toggle") then
 				if(tesla_pilot) then
 					if(tesla_pilot_ped) then
 						RemovePedElegantly(tesla_pilot_ped)
