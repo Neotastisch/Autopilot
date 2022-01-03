@@ -69,7 +69,7 @@ RegisterCommand("autopilot", function(source, args)
 					else
 						pilot = true
 						minimap("Auto-Pilot activated.")
-						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 30.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
+						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 25.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
 						SetDriveTaskDrivingStyle(GetPlayerPed(-1), 786603)
 						Citizen.CreateThread(function()
 							while pilot do
@@ -120,7 +120,7 @@ RegisterCommand("autopilot", function(source, args)
 					SetEntityInvincible(tesla_pilot_ped, true)
 					SetEntityVisible(tesla_pilot_ped, false, 0)
 					player_coords = GetEntityCoords(GetPlayerPed(-1))
-					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, 30.0, 0.0, GetHashKey(tesla), 786603, 1.0, 1)
+					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, 25.0, 0.0, GetHashKey(tesla), 786603, 1.0, 1)
 					Citizen.CreateThread(function()
 						while tesla_pilot do
 							Wait(100)
