@@ -3,7 +3,7 @@
 
 !!! Improved Version from SomeGuyX/autopilot !!!
 
-Currently the config is only in german, but you can use google translator to translate.
+Currently the config is only in english, but you can use google translator to translate.
 
 /autopilot on -> Activates car to waypoint if you are inside the vehicle
 
@@ -11,5 +11,3 @@ Currently the config is only in german, but you can use google translator to tra
 |
 /autopilot on -> Automaticly drives the car to your position if you are NOT inside the vehicle
 
-Todo:
-Add ENGLISH config
