@@ -83,7 +83,10 @@ RegisterCommand("autopilot", function(source, args)
 				while tesla_pilot do
 					Wait(100)
 					player_coords = GetEntityCoords(GetPlayerPed(-1))
-					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, 10.0, 0.0, GetHashKey(tesla), 786603, 1.0, 1)
+					speed = GetEntitySpeed(GetPlayerPed(-1));
+					if(speed > 1)then speed = 6 end
+					
+					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, speed+4, 0.0, GetHashKey(tesla), 1074528293, 1.0, 1)
 				end
 			end)
 		end
@@ -139,7 +142,7 @@ RegisterCommand("autopilot", function(source, args)
 		end
 	else
 		if(IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) and (vehicles:find(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(GetPlayerPed(-1), false)))) or vehicles == "")) then
-			if(args[1] == "toggle" or args[1] == "on") then
+			if(args[1] == "toggle" or args[1] == "on" or args[1] == nil) then
 				waypoint = Citizen.InvokeNative(0xFA7C7F0AADF25D09, GetFirstBlipInfoId(8), Citizen.ResultAsVector())
 				if(IsWaypointActive()) then
 					if(pilot) then
@@ -178,7 +181,7 @@ RegisterCommand("autopilot", function(source, args)
 				minimap("Unknown action.")
 			end
 		elseif(tesla) then
-			if(args[1] == "toggle" or args[1] == "on") then
+			if(args[1] == "toggle" or args[1] == "on" or args[1] == nil) then
 				if(tesla_pilot) then
 					if(tesla_pilot_ped) then
 						RemovePedElegantly(tesla_pilot_ped)
