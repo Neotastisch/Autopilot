@@ -81,12 +81,12 @@ RegisterCommand("autopilot", function(source, args)
 			
 			Citizen.CreateThread(function()
 				while tesla_pilot do
-					Wait(100)
+					Wait(1000)
 					player_coords = GetEntityCoords(GetPlayerPed(-1))
 					speed = GetEntitySpeed(GetPlayerPed(-1));
-					if(speed > 1)then speed = 6 end
+					if(speed > 1)then speed = 19 end
 					
-					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, speed+4, 0.0, GetHashKey(tesla), 1074528293, 1.0, 1)
+					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, speed+8, 0.0, GetHashKey(tesla), 1074528293, 1.0, 1)
 				end
 			end)
 		end
