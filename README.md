@@ -1,7 +1,6 @@
 
 #FiveM Autopilot
 
-!!! Improved Version from SomeGuyX/autopilot !!!
 
 Currently the config is only in english, but you can use google translator to translate.
 
