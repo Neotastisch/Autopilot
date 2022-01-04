@@ -8,8 +8,88 @@ local tesla_pilot = false
 local tesla_pilot_ped = nil
 local pilot = false
 
-TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot features', {{name="toggle|mark", help="Activate Autopilot and mark your vehicle."}})
+TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot features', {{name="toggle|mark|waypoint", help="Activate Autopilot, mark your vehicle and drives the vehicle driverless to your waypoint."}})
 RegisterCommand("autopilot", function(source, args)
+	if(args[1] == "author") then
+		minimap("The author is Neotastisch")
+	end
+	if(args[1] == "waypoint") then
+		if(tesla_pilot) then
+			
+			if(tesla_pilot_ped) then
+				RemovePedElegantly(tesla_pilot_ped)
+			end
+			tesla_pilot = false
+			tesla_pilot_ped = nil
+			SetVehicleEngineOn(tesla, false, false, false)
+			minimap("Auto-Pilot deactivated.")
+		else
+			RequestModel(225514697)
+			while not HasModelLoaded(225514697) do
+				Wait(5)
+			end
+			minimap("Auto-Pilot activated.")
+			tesla_pilot = true
+			tesla_pilot_ped = CreatePed(0, 225514697, GetEntityCoords(tesla)["x"], GetEntityCoords(tesla)["y"], GetEntityCoords(tesla)["z"], 0.0, false, true)
+			SetEntityAsMissionEntity(tesla_pilot_ped, true, true)
+			SetPedIntoVehicle(tesla_pilot_ped, tesla, -1)
+			SetEntityInvincible(tesla_pilot_ped, true)
+			SetEntityVisible(tesla_pilot_ped, false, 0)
+			waypoint = Citizen.InvokeNative(0xFA7C7F0AADF25D09, GetFirstBlipInfoId(8), Citizen.ResultAsVector())
+			
+			TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, waypoint["x"], waypoint["y"], waypoint["z"], 25.0, 0.0, GetHashKey(tesla), 786603, 1.0, 1)
+			Citizen.CreateThread(function()
+				while tesla_pilot do
+					Wait(100)
+					if(GetDistanceBetweenCoords(GetEntityCoords(tesla)["x"], GetEntityCoords(tesla)["y"], GetEntityCoords(tesla)["z"], waypoint["x"], waypoint["y"], waypoint["z"], 0) < 10.0) then
+						while GetEntitySpeed(tesla) - 1.0 > 0.0 do
+							SetVehicleForwardSpeed(tesla, GetEntitySpeed(tesla) - 1.0)
+							Wait(100)
+						end
+						tesla_pilot = false
+						RemovePedElegantly(tesla_pilot_ped)
+						tesla_pilot_ped = nil
+						SetVehicleEngineOn(tesla, false, false, false)
+						minimap("Auto-Pilot arrived.")
+					end
+				end
+			end)
+		end
+		return
+	end
+	if(args[1] == "follow") then
+		if(tesla_pilot) then
+			if(tesla_pilot_ped) then
+				RemovePedElegantly(tesla_pilot_ped)
+			end
+			tesla_pilot = false
+			tesla_pilot_ped = nil
+			SetVehicleEngineOn(tesla, false, false, false)
+			minimap("Auto-Pilot deactivated.")
+		else
+			RequestModel(225514697)
+			while not HasModelLoaded(225514697) do
+				Wait(5)
+			end
+			minimap("Auto-Pilot activated.")
+			tesla_pilot = true
+			tesla_pilot_ped = CreatePed(0, 225514697, GetEntityCoords(tesla)["x"], GetEntityCoords(tesla)["y"], GetEntityCoords(tesla)["z"], 0.0, false, true)
+			SetEntityAsMissionEntity(tesla_pilot_ped, true, true)
+			SetPedIntoVehicle(tesla_pilot_ped, tesla, -1)
+			SetEntityInvincible(tesla_pilot_ped, true)
+			SetEntityVisible(tesla_pilot_ped, false, 0)
+			
+			Citizen.CreateThread(function()
+				while tesla_pilot do
+					Wait(100)
+					player_coords = GetEntityCoords(GetPlayerPed(-1))
+					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, 10.0, 0.0, GetHashKey(tesla), 786603, 1.0, 1)
+				end
+			end)
+		end
+		return
+	end
+	--
 	if(args[1] == "mark") then
 		if IsPedInAnyVehicle(PlayerPedId(), false) then
 			--Is in a vehicle
@@ -59,7 +139,7 @@ RegisterCommand("autopilot", function(source, args)
 		end
 	else
 		if(IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) and (vehicles:find(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(GetPlayerPed(-1), false)))) or vehicles == "")) then
-			if(args[1] == "toggle") then
+			if(args[1] == "toggle" or args[1] == "on") then
 				waypoint = Citizen.InvokeNative(0xFA7C7F0AADF25D09, GetFirstBlipInfoId(8), Citizen.ResultAsVector())
 				if(IsWaypointActive()) then
 					if(pilot) then
@@ -69,7 +149,7 @@ RegisterCommand("autopilot", function(source, args)
 					else
 						pilot = true
 						minimap("Auto-Pilot activated.")
-						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 25.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
+						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 35.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
 						SetDriveTaskDrivingStyle(GetPlayerPed(-1), 786603)
 						Citizen.CreateThread(function()
 							while pilot do
@@ -98,7 +178,7 @@ RegisterCommand("autopilot", function(source, args)
 				minimap("Unknown action.")
 			end
 		elseif(tesla) then
-			if(args[1] == "toggle") then
+			if(args[1] == "toggle" or args[1] == "on") then
 				if(tesla_pilot) then
 					if(tesla_pilot_ped) then
 						RemovePedElegantly(tesla_pilot_ped)
@@ -139,6 +219,7 @@ RegisterCommand("autopilot", function(source, args)
 					end)
 				end
 			end
+			
 		else
 			minimap("Unknown vehicle.")
 		end
