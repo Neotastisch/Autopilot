@@ -8,7 +8,7 @@ local tesla_pilot = false
 local tesla_pilot_ped = nil
 local pilot = false
 
-TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot features', {{name="toggle|mark|waypoint", help="Activate Autopilot, mark your vehicle and drives the vehicle driverless to your waypoint."}})
+TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot features', {{name="toggle|mark|waypoint|follow", help="Activate Autopilot"}})
 RegisterCommand("autopilot", function(source, args)
 	if(args[1] == "author") then
 		minimap("The author is Neotastisch")
