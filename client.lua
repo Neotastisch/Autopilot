@@ -7,6 +7,7 @@ local tesla_blip = nil
 local tesla_pilot = false
 local tesla_pilot_ped = nil
 local pilot = false
+local dance = false
 
 TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot features', {{name="toggle|mark|waypoint|follow", help="Activate Autopilot"}})
 RegisterCommand("autopilot", function(source, args)
@@ -57,6 +58,7 @@ RegisterCommand("autopilot", function(source, args)
 		end
 		return
 	end
+	
 	if(args[1] == "follow") then
 		if(tesla_pilot) then
 			if(tesla_pilot_ped) then
@@ -93,6 +95,29 @@ RegisterCommand("autopilot", function(source, args)
 		return
 	end
 	--
+	if(args[1] == "dance") then
+		if(dance) then
+			dance = false
+			SetVehicleDoorsShut(GetVehiclePedIsIn(GetPlayerPed(-1), false), false)
+			minimap("Dance mode stopped.")
+			for i = 0, 6 do
+				SetVehicleDoorShut(tesla, i, false) -- will close all doors from 0-6
+			end
+			return
+		else
+			dance = true
+			minimap("Dance mode started.")
+			Citizen.CreateThread(function()
+				SetVehRadioStation(GetVehiclePedIsIn(GetPlayerPed(-1), false), 'OFF')
+				while dance do
+					Wait(100)
+					SetVehicleDoorOpen(GetVehiclePedIsIn(GetPlayerPed(-1), false), math.random(0, 6), false, false)
+					SetVehicleDoorShut(GetVehiclePedIsIn(GetPlayerPed(-1), false), math.random(0, 6), false)
+				end
+			end)
+			return
+		end
+	end
 	if(args[1] == "mark") then
 		if IsPedInAnyVehicle(PlayerPedId(), false) then
 			--Is in a vehicle
@@ -152,7 +177,7 @@ RegisterCommand("autopilot", function(source, args)
 					else
 						pilot = true
 						minimap("Auto-Pilot activated.")
-						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 35.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
+						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 30.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
 						SetDriveTaskDrivingStyle(GetPlayerPed(-1), 786603)
 						Citizen.CreateThread(function()
 							while pilot do
@@ -215,8 +240,10 @@ RegisterCommand("autopilot", function(source, args)
 								tesla_pilot = false
 								RemovePedElegantly(tesla_pilot_ped)
 								tesla_pilot_ped = nil
+								SetVehicleDoorOpen(tesla, 0, false, true)
 								SetVehicleEngineOn(tesla, false, false, false)
 								minimap("Auto-Pilot arrived.")
+								
 							end
 						end
 					end)
