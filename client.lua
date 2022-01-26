@@ -30,6 +30,9 @@ RegisterCommand("autopilot", function(source, args)
 			while not HasModelLoaded(225514697) do
 				Wait(5)
 			end
+			for i = 0, 6 do
+				SetVehicleDoorShut(tesla, i, false) -- will close all doors from 0-6
+			end
 			minimap("Auto-Pilot activated.")
 			tesla_pilot = true
 			tesla_pilot_ped = CreatePed(0, 225514697, GetEntityCoords(tesla)["x"], GetEntityCoords(tesla)["y"], GetEntityCoords(tesla)["z"], 0.0, false, true)
@@ -73,6 +76,9 @@ RegisterCommand("autopilot", function(source, args)
 			RequestModel(225514697)
 			while not HasModelLoaded(225514697) do
 				Wait(5)
+			end
+			for i = 0, 6 do
+				SetVehicleDoorShut(tesla, i, false) -- will close all doors from 0-6
 			end
 			minimap("Auto-Pilot activated.")
 			tesla_pilot = true
@@ -195,7 +201,7 @@ RegisterCommand("autopilot", function(source, args)
 				if(IsWaypointActive()) then
 					if(pilot) then
 						pilot = false
-						SetVehicleDoorOpen(tesla, 0, false, true)
+						SetVehicleDoorOpen(tesla, 0, false)
 						minimap("Auto-Pilot disabled.")
 						ClearPedTasks(GetPlayerPed(-1))
 					else
@@ -213,7 +219,7 @@ RegisterCommand("autopilot", function(source, args)
 									end
 									pilot = false
 									ClearPedTasks(GetPlayerPed(-1))
-									SetVehicleDoorOpen(tesla, 0, false, true)
+									SetVehicleDoorOpen(tesla, 0, false)
 									minimap("Auto-Pilot disabled.")
 								end
 								if(IsControlPressed(27, 63) or IsControlPressed(27, 64) or IsControlPressed(27, 71) or IsControlPressed(27, 72) or IsControlPressed(27, 76)or IsControlPressed(27, 131)) then
@@ -244,6 +250,9 @@ RegisterCommand("autopilot", function(source, args)
 					RequestModel(225514697)
 					while not HasModelLoaded(225514697) do
 						Wait(5)
+					end
+					for i = 0, 6 do
+						SetVehicleDoorShut(tesla, i, false) -- will close all doors from 0-6
 					end
 					minimap("Auto-Pilot activated.")
 					tesla_pilot = true
