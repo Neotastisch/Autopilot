@@ -8,6 +8,7 @@ local tesla_pilot = false
 local tesla_pilot_ped = nil
 local pilot = false
 local dance = false
+local lines = false
 
 TriggerEvent('chat:addSuggestion', '/autopilot', 'Autopilot features', {{name="toggle|mark|waypoint|follow", help="Activate Autopilot"}})
 RegisterCommand("autopilot", function(source, args)
@@ -118,6 +119,28 @@ RegisterCommand("autopilot", function(source, args)
 			return
 		end
 	end
+	if(args[1] == "lines") then
+		if(lines) then
+			minimap("Reverse lines deactivated.")
+			lines = false
+		else
+			minimap("Reverse lines activated.")
+			lines = true
+			Citizen.CreateThread(function()
+				while lines do
+					Wait(5)
+					if(IsPedInAnyVehicle(GetPlayerPed(-1)) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1)) then
+						if(GetVehicleCurrentGear(GetVehiclePedIsIn(GetPlayerPed(-1), false)) == 0) then
+							DrawLine(GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), 1.0, -2.0, 0.0).x, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), 1.0, -2.0, 0.0).y, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), 1.0, -2.0, 0.0).z, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), 1.0 - (GetVehicleSteeringAngle(GetVehiclePedIsIn(GetPlayerPed(-1), false)) / GetVehicleHandlingFloat(GetVehiclePedIsIn(GetPlayerPed(-1), false), "CHandlingData", "fSteeringLock")), -6.0, 0.0).x, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), 1.0 - (GetVehicleSteeringAngle(GetVehiclePedIsIn(GetPlayerPed(-1), false)) / GetVehicleHandlingFloat(GetVehiclePedIsIn(GetPlayerPed(-1), false), "CHandlingData", "fSteeringLock")), -6.0, 0.0).y, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), 1.0 - (GetVehicleSteeringAngle(GetVehiclePedIsIn(GetPlayerPed(-1), false)) / GetVehicleHandlingFloat(GetVehiclePedIsIn(GetPlayerPed(-1), false), "CHandlingData", "fSteeringLock")), -6.0, 0.0).z, 255, 255, 255, 255)
+							DrawLine(GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1.0, -2.0, 0.0).x, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1.0, -2.0, 0.0).y, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1.0, -2.0, 0.0).z, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1.0 - (GetVehicleSteeringAngle(GetVehiclePedIsIn(GetPlayerPed(-1), false)) / GetVehicleHandlingFloat(GetVehiclePedIsIn(GetPlayerPed(-1), false), "CHandlingData", "fSteeringLock")), -6.0, 0.0).x, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1.0 - (GetVehicleSteeringAngle(GetVehiclePedIsIn(GetPlayerPed(-1), false)) / GetVehicleHandlingFloat(GetVehiclePedIsIn(GetPlayerPed(-1), false), "CHandlingData", "fSteeringLock")), -6.0, 0.0).y, GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1.0 - (GetVehicleSteeringAngle(GetVehiclePedIsIn(GetPlayerPed(-1), false)) / GetVehicleHandlingFloat(GetVehiclePedIsIn(GetPlayerPed(-1), false), "CHandlingData", "fSteeringLock")), -6.0, 0.0).z, 255, 255, 255, 255)
+						end
+					else
+						lines = false
+					end
+				end
+			end)
+		end
+	end
 	if(args[1] == "mark") then
 		if IsPedInAnyVehicle(PlayerPedId(), false) then
 			--Is in a vehicle
@@ -172,6 +195,7 @@ RegisterCommand("autopilot", function(source, args)
 				if(IsWaypointActive()) then
 					if(pilot) then
 						pilot = false
+						SetVehicleDoorOpen(tesla, 0, false, true)
 						minimap("Auto-Pilot disabled.")
 						ClearPedTasks(GetPlayerPed(-1))
 					else
@@ -189,6 +213,7 @@ RegisterCommand("autopilot", function(source, args)
 									end
 									pilot = false
 									ClearPedTasks(GetPlayerPed(-1))
+									SetVehicleDoorOpen(tesla, 0, false, true)
 									minimap("Auto-Pilot disabled.")
 								end
 								if(IsControlPressed(27, 63) or IsControlPressed(27, 64) or IsControlPressed(27, 71) or IsControlPressed(27, 72) or IsControlPressed(27, 76)or IsControlPressed(27, 131)) then
