@@ -125,6 +125,20 @@ RegisterCommand("autopilot", function(source, args)
 			return
 		end
 	end
+if(args[1] == "taxi") then
+		minimap("Set as nearest vehicle")
+		local pos = GetEntityCoords(GetPlayerPed(-1),true)
+		local veh = GetClosestVehicle(pos.x,pos.y,pos.z,100000.00,0)
+		if IsEntityAVehicle(veh) then
+			tesla = veh
+			SetEntityAsMissionEntity(veh, true, true)
+			TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 30.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
+			return
+		else
+			minimap("No vehicles in distance.")
+			return
+		end
+	end
 	if(args[1] == "lines") then
 		if(lines) then
 			minimap("Reverse lines deactivated.")
