@@ -95,7 +95,7 @@ RegisterCommand("autopilot", function(source, args)
 					speed = GetEntitySpeed(GetPlayerPed(-1));
 					if(speed > 1)then speed = 19 end
 					
-					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, speed+8, 0.0, GetHashKey(tesla), 795452, 1.0, 1)
+					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, speed+8, 0.0, GetHashKey(tesla), 525116, 1.0, 1)
 				end
 			end)
 		end
@@ -132,7 +132,7 @@ if(args[1] == "taxi") then
 		if IsEntityAVehicle(veh) then
 			tesla = veh
 			SetEntityAsMissionEntity(veh, true, true)
-			TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 30.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 786603, 0, true)
+			TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 30.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 525116, 0, true)
 			return
 		else
 			minimap("No vehicles in distance.")
@@ -221,7 +221,7 @@ if(args[1] == "taxi") then
 					else
 						pilot = true
 						minimap("Auto-Pilot activated.")
-						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 30.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 2147483647, 0, true)
+						TaskVehicleDriveToCoord(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), 0), waypoint["x"], waypoint["y"], waypoint["z"], 30.0, 0.0, GetHashKey(GetVehiclePedIsIn(GetPlayerPed(-1), 0)), 525116, 0, true)
 						SetDriveTaskDrivingStyle(GetPlayerPed(-1),795452)
 						Citizen.CreateThread(function()
 							while pilot do
@@ -276,7 +276,7 @@ if(args[1] == "taxi") then
 					SetEntityInvincible(tesla_pilot_ped, true)
 					SetEntityVisible(tesla_pilot_ped, false, 0)
 					player_coords = GetEntityCoords(GetPlayerPed(-1))
-					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, 120.0, 0.0, GetHashKey(tesla),795452, 1.0, 1)
+					TaskVehicleDriveToCoord(tesla_pilot_ped, tesla, player_coords.x, player_coords.y, player_coords.z, 120.0, 0.0, GetHashKey(tesla),525116, 1.0, 1)
 					Citizen.CreateThread(function()
 						while tesla_pilot do
 							Wait(100)
