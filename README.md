@@ -1,8 +1,7 @@
 
-#FiveM Autopilot
+# FiveM Autopilot
 
-
-Currently the config is only in english, but you can use google translator to translate.
+## This repository is not maintained.
 
 /autopilot toggle -> Activates car to waypoint if you are inside the vehicle
 
